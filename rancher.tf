@@ -75,8 +75,7 @@ resource "cloudstack_network_acl_rule" "acl-rule" {
 
   rule {
     source_cidr = "195.66.90.0/24"
-    protocol = "tcp"
-    ports = ["8080","22"]
+    protocol = "all"
     action = "allow"
     traffic_type = "ingress"
   }
@@ -101,18 +100,6 @@ resource "cloudstack_port_forward" "master" {
     private_port = "8080"
     public_port = "80"
     virtual_machine = "${cloudstack_instance.master.0.id}"
-  }
-}
-
-resource "cloudstack_port_forward" "worker" {
-  count = "${lookup(var.counts, "worker")}"
-  ipaddress = "${element(cloudstack_ipaddress.public_ip.*.id, count.index+1)}"
-
-  forward {
-    protocol = "tcp"
-    private_port = "22"
-    public_port = "22"
-    virtual_machine = "${cloudstack_instance.worker.0.id}"
   }
 }
 

@@ -28,8 +28,8 @@ variable "counts" {
     vpc = "1"
     network = "1"
     master = "1"
-    worker = "1"
-    public_ip = "2"
+    worker = "2"
+    public_ip = "3"
   }
 }
 
