@@ -34,5 +34,5 @@ variable "counts" {
 }
 
 variable "cs_template" {
-        default = "Linux-gnu-x86_64-Coreos-XenServer-latest"
+        default = "Coreos-beta-x86_64-Community-XenServer-latest"
 }

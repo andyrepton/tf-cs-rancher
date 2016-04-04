@@ -97,10 +97,29 @@ resource "cloudstack_port_forward" "master" {
   }
   forward {
     protocol = "tcp"
+    private_port = "22"
+    public_port = "122"
+    virtual_machine = "${cloudstack_instance.worker.0.id}"
+  }
+  forward {
+    protocol = "tcp"
+    private_port = "22"
+    public_port = "222"
+    virtual_machine = "${cloudstack_instance.worker.1.id}"
+  }
+  forward {
+    protocol = "tcp"
     private_port = "8080"
     public_port = "80"
     virtual_machine = "${cloudstack_instance.master.0.id}"
   }
+}
+
+resource "cloudstack_static_nat" "workers" {
+  count = "${lookup(var.counts, "worker")}"
+  ipaddress = "${element(cloudstack_ipaddress.public_ip.*.id, count.index+1)}"
+  virtual_machine = "${element(cloudstack_instance.worker.*.id, count.index+1)}"
+  network = "${cloudstack_network.network.0.id}"
 }
 
 output "addresses" {
